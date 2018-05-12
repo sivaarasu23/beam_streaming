@@ -17,8 +17,8 @@ To start the stream process, run `python beam_streaming.py --input_topic=""`
 
 # Output:
 
-![Alt text](file:///Users/siva/Desktop/output.png)
+![Alt text](output.png)
 
 # Data Flow:
 
-![Alt text](/Users/siva/Downloads/data_flow_model.png))
+![Alt text](data_flow_model.png)
