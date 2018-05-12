@@ -1,23 +1,3 @@
-#
-# Licensed to the Apache Software Foundation (ASF) under one or more
-# contributor license agreements.  See the NOTICE file distributed with
-# this work for additional information regarding copyright ownership.
-# The ASF licenses this file to You under the Apache License, Version 2.0
-# (the "License"); you may not use this file except in compliance with
-# the License.  You may obtain a copy of the License at
-#
-#    http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
-
-"""A streaming word-counting workflow.
-"""
-
 from __future__ import absolute_import
 
 import argparse
@@ -42,11 +22,7 @@ def dump(line):
   return line
 
 class CollectOrders(beam.DoFn):
-
   def process(self, element):  
-    """
-    Returns a list of tuples containing country, 
-    """
     result = [
         ((element['service_area_name'], element['payment_type'],
          element['status']), element['order_number'])
@@ -55,7 +31,6 @@ class CollectOrders(beam.DoFn):
     return result
 
 class Split(beam.DoFn):
-
     def process(self, element):
       return [json.loads(element)]
 
@@ -76,20 +51,7 @@ def run(argv=None):
       help=('Input PubSub subscription of the form '
             '"projects/<PROJECT>/subscriptions/<SUBSCRIPTION>."'))
 
-  # configuration_array = [
-  #     '--runner=DataflowRunner',
-  #     '--project=subtle-seer-113110',
-  #     '--staging_location=gs://subtle-seer-113110/__staging__',
-  #     '--temp_location=gs://subtle-seer-113110/__temp__',
-  #     '--job_name=stream-data-transfer',
-  #     '--disk_size_gb=30',
-  #     '--max_num_workers=1',
-  #     '--region=asia-east1',
-  #     '--worker_machine_type=n1-standard-1'
-  # ]
-
   known_args, pipeline_args = parser.parse_known_args(argv)
-  # pipeline_args.extend(configuration_array)
 
   # We use the save_main_session option because one or more DoFn's in this
   # workflow rely on global context (e.g., a module imported at module level).
@@ -105,8 +67,7 @@ def run(argv=None):
   else:
     lines = p | beam.io.ReadStringsFromPubSub(topic=known_args.input_topic)
 
-  # lines | 'PrintData' >> beam.Map(lambda x: dump(x))
-
+  # Couting number of orders received 
   counts = (lines
             | 'dict_t' >> (beam.ParDo(Split()))
             | 'split' >> (beam.ParDo(CollectOrders()))
