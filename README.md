@@ -14,3 +14,11 @@ Publishing incoming orders through the pubsub queue and using apache beam proces
 To start the publisher, run `python pubsub.py --tast='publish' --input_topic="" --subscription_topic="" --number_of_records=""`
 
 To start the stream process, run `python beam_streaming.py --input_topic=""`
+
+# Output:
+
+![Alt text](file:///Users/siva/Desktop/output.png)
+
+# Data Flow:
+
+![Alt text](/Users/siva/Downloads/data_flow_model.png))
